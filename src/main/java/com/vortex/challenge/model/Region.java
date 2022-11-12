@@ -1,13 +1,17 @@
 package com.vortex.challenge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+@Setter
 @NoArgsConstructor
 @Table(name = "REGIONS")
 public class Region {
@@ -28,5 +32,18 @@ public class Region {
     public void addCountry(Country country) {
         countries.add(country);
         country.setRegionId(this);
+    }
+
+    public int getRegionId() {
+        return regionId;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    @JsonIgnore
+    public Set<Country> getCountries() {
+        return countries;
     }
 }

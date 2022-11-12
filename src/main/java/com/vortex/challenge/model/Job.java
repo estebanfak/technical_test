@@ -1,14 +1,17 @@
 package com.vortex.challenge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+@Setter
 @NoArgsConstructor
 @Table(name = "JOBS")
 public class Job {
@@ -43,5 +46,30 @@ public class Job {
     public void addJobHistory(JobHistory jobHistory) {
         jobHistories.add(jobHistory);
         jobHistory.setJobId(this);
+    }
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public short getMinSalary() {
+        return minSalary;
+    }
+
+    public short getMaxSalary() {
+        return maxSalary;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    @JsonIgnore
+    public Set<JobHistory> getJobHistories() {
+        return jobHistories;
     }
 }

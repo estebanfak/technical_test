@@ -2,9 +2,14 @@ package com.vortex.challenge.controller;
 
 import com.vortex.challenge.dto.CreateEmployeeDto;
 import com.vortex.challenge.dto.EmployeeDto;
+import com.vortex.challenge.dto.EmployeeModifyDto;
+import com.vortex.challenge.exception.DepartmentNotFoundException;
+import com.vortex.challenge.exception.EmployeeNotFoundException;
+import com.vortex.challenge.exception.JobNotFoundException;
 import com.vortex.challenge.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,59 +20,49 @@ public class EmployeeController {
 
 
     @GetMapping("/{offset}/{pageSize}")
-    public Page<EmployeeDto> getAll(@PathVariable int offset,
-                                    @PathVariable int pageSize){
-        return employeeService.getAll(offset, pageSize);
+    public ResponseEntity<?> getAll(@PathVariable int offset,
+                                 @PathVariable int pageSize){
+        return ResponseEntity.ok(employeeService.getAll(offset, pageSize));
     }
     @PostMapping
-    public EmployeeDto newEmployee(@RequestBody CreateEmployeeDto createEmployeeDto){
-        return employeeService.newEmployee(createEmployeeDto);
+    public ResponseEntity<?> newEmployee(@RequestBody CreateEmployeeDto createEmployeeDto) throws JobNotFoundException, DepartmentNotFoundException {
+        return ResponseEntity.ok(employeeService.newEmployee(createEmployeeDto));
     }
-    @PatchMapping
-    public EmployeeDto modifyEmployee(@RequestBody EmployeeDto employeeDto) throws Exception {
-        return employeeService.modifyEmployee(employeeDto);
+    @PatchMapping("/{employeeId}")
+    public ResponseEntity<?> modifyEmployee(@PathVariable int employeeId,
+                                            @RequestBody EmployeeModifyDto employeeModifyDto) throws EmployeeNotFoundException, JobNotFoundException {
+        return ResponseEntity.ok(employeeService.modifyEmployee(employeeId, employeeModifyDto));
     }
     @DeleteMapping("/{employeeId}")
-    public EmployeeDto deleteEmployee(@PathVariable int employeeId) throws Exception{
-        return employeeService.deleteEmployee(employeeId);
+    public ResponseEntity<?> deleteEmployee(@PathVariable int employeeId) throws EmployeeNotFoundException{
+        return ResponseEntity.ok(employeeService.deleteEmployee(employeeId));
     }
     @GetMapping("/{employeeId}")
-    public EmployeeDto getEmployeeById(@PathVariable int employeeId) throws Exception {
-        return employeeService.getEmployeeById(employeeId);
+    public ResponseEntity<?> getEmployeeById(@PathVariable int employeeId) throws EmployeeNotFoundException {
+        return ResponseEntity.ok(employeeService.getEmployeeById(employeeId));
     }
     @GetMapping("/jobId/{jobId}/{offset}/{pageSize}")
-    public Page<EmployeeDto> filterByJobId(@PathVariable int jobId,
+    public ResponseEntity<?> filterByJobId(@PathVariable String jobId,
                                            @PathVariable int offset,
                                            @PathVariable int pageSize){
-        return employeeService.filterByJobIdId(jobId, offset, pageSize);
+        return ResponseEntity.ok(employeeService.filterByJobIdId(jobId, offset, pageSize));
     }
     @GetMapping("/managerId/{managerId}/{offset}/{pageSize}")
-    public Page<EmployeeDto> filterByManagerId(@PathVariable int managerId,
+    public ResponseEntity<?> filterByManagerId(@PathVariable int managerId,
                                                @PathVariable int offset,
                                                @PathVariable int pageSize){
-        return employeeService.filterByManagerId(managerId, offset, pageSize);
+        return ResponseEntity.ok(employeeService.filterByManagerId(managerId, offset, pageSize));
     }
     @GetMapping("/lastName/{lastName}/{offset}/{pageSize}")
-    public Page<EmployeeDto> filterByLastName(@PathVariable String lastName,
+    public ResponseEntity<?> filterByLastName(@PathVariable String lastName,
                                               @PathVariable int offset,
                                               @PathVariable int pageSize){
-        return employeeService.filterByLastName(lastName, offset, pageSize);
+        return ResponseEntity.ok(employeeService.filterByLastName(lastName, offset, pageSize));
     }
     @GetMapping("/sorted/{offset}/{pageSize}")
-    public Page<EmployeeDto> employeesSortedByHireDateAscending(@PathVariable int offset,
+    public ResponseEntity<?> employeesSortedByHireDateAscending(@PathVariable int offset,
                                                                 @PathVariable int pageSize){
-        return employeeService.employeesSortedByHireDateAscending(offset, pageSize);
+        return ResponseEntity.ok(employeeService.employeesSortedByHireDateAscending(offset, pageSize));
 
     }
-
-
-
-//    todo -> ver el drama con la duplicacion de key
-    @GetMapping("/setmanager/{manager}/{employee}")
-    public void setManager(@PathVariable int manager,
-                           @PathVariable int employee){
-        employeeService.setManager(manager, employee);
-    }
-
-
 }

@@ -50,21 +50,22 @@ public class Employee {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "managerId")
     private Set<Department> departments = new HashSet<>();
 
-    public Employee (String firstName, String lastName, String email, String phoneNumber, Date hireDate, double salary, double commissionPct){
+    public Employee (String firstName, String lastName, String email, String phoneNumber, double salary, double commissionPct, Job jobId){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.hireDate = hireDate;
+        this.hireDate = new Date();
         this.salary = salary;
         this.commissionPct = commissionPct;
+        this.jobId = jobId;
     }
-    public Employee (String firstName, String lastName, String email, String phoneNumber, Date hireDate, double salary, double commissionPct, Job jobId, Department department){
+    public Employee (String firstName, String lastName, String email, String phoneNumber, double salary, double commissionPct, Job jobId, Department department){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.hireDate = hireDate;
+        this.hireDate = new Date();
         this.salary = salary;
         this.commissionPct = commissionPct;
         this.jobId = jobId;
@@ -146,5 +147,14 @@ public class Employee {
     @JsonIgnore
     public Set<Employee> getEmployees() {
         return employees;
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    @JsonIgnore
+    public Set<Department> getDepartments() {
+        return departments;
     }
 }

@@ -31,7 +31,8 @@ public class JobHistory {
     @JoinColumn(name = "DEPARTMENT_ID")
     private Department departmentId;
 
-    public JobHistory(Date startDate, Date endDate, Job jobId, Department department){
+    public JobHistory(Employee employeeId, Date startDate, Date endDate, Job jobId, Department department){
+        this.employeeId = employeeId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.jobId = jobId;

@@ -1,10 +1,14 @@
 package com.vortex.challenge.service;
 
+import com.vortex.challenge.exception.AverageSalaryException;
+import com.vortex.challenge.exception.DepartmentNotFoundException;
+import com.vortex.challenge.exception.LocationNotFoundException;
 import com.vortex.challenge.model.Department;
 
+import java.util.Optional;
+
 public interface DepartmentService {
-//    Department addDepartment(String departmentName, Location location) throws Exception;
+    Department addDepartment(String departmentName, short locationId) throws AverageSalaryException, LocationNotFoundException;
 
-
-    Department addDepartment(String departmentName, long locationId) throws Exception;
+    Department findByDepartmentId(short departmentId) throws DepartmentNotFoundException;
 }

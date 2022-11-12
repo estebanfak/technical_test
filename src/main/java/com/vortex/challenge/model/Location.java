@@ -1,13 +1,17 @@
 package com.vortex.challenge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+@Setter
 @NoArgsConstructor
 @Table(name = "LOCATIONS")
 public class Location {
@@ -40,5 +44,33 @@ public class Location {
     public void addDepartment(Department department) {
         departments.add(department);
         department.setLocationId(this);
+    }
+
+    public short getLocationId() {
+        return locationId;
+    }
+
+    public String getStreetAdress() {
+        return streetAdress;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getStateProvince() {
+        return stateProvince;
+    }
+
+    public Country getCountryId() {
+        return countryId;
+    }
+    @JsonIgnore
+    public Set<Department> getDepartments() {
+        return departments;
     }
 }

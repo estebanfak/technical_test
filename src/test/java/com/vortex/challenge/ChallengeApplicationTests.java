@@ -1,5 +1,7 @@
 package com.vortex.challenge;
 
+import com.vortex.challenge.constant.Messages;
+import com.vortex.challenge.exception.JobNotFoundException;
 import com.vortex.challenge.model.*;
 import com.vortex.challenge.repository.*;
 import org.junit.jupiter.api.MethodOrderer;
@@ -177,38 +179,38 @@ class ChallengeApplicationTests {
     }
     @Test
     @Order(24)
-    public void addEmployee(){
-        Employee employee = new Employee("Esteban", "Casile", "esteban@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Cajero"), departmentRepository.findByDepartmentName("Contable"));
+    public void addEmployee() throws JobNotFoundException {
+        Employee employee = new Employee("Esteban", "Casile", "esteban@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Cajero").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Contable"));
         assertNotNull(employeeRepository.save(employee));
     }
     @Test
     @Order(25)
-    public void addEmployee1(){
-        Employee employee = new Employee("Carlos", "Lopez", "esteban2@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Vendedor"), departmentRepository.findByDepartmentName("Finanzas"));
+    public void addEmployee1() throws JobNotFoundException {
+        Employee employee = new Employee("Carlos", "Lopez", "esteban2@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Vendedor").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Finanzas"));
         assertNotNull(employeeRepository.save(employee));
     }
     @Test
     @Order(26)
-    public void addEmployee2(){
-        Employee employee = new Employee("Pepe", "Perez", "esteban3@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Limpieza"), departmentRepository.findByDepartmentName("Ventas"));
+    public void addEmployee2() throws JobNotFoundException {
+        Employee employee = new Employee("Pepe", "Perez", "esteban3@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Limpieza").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Ventas"));
         assertNotNull(employeeRepository.save(employee));
     }
     @Test
     @Order(27)
-    public void addEmployee3(){
-        Employee employee = new Employee("Jacinto", "Martin", "esteban4@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Cajero"), departmentRepository.findByDepartmentName("Finanzas"));
+    public void addEmployee3() throws JobNotFoundException {
+        Employee employee = new Employee("Jacinto", "Martin", "esteban4@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Cajero").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Finanzas"));
         assertNotNull(employeeRepository.save(employee));
     }
     @Test
     @Order(28)
-    public void addEmployee4(){
-        Employee employee = new Employee("Pablo", "Gomez", "esteba5n@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Vendedor"), departmentRepository.findByDepartmentName("Contable"));
+    public void addEmployee4() throws JobNotFoundException {
+        Employee employee = new Employee("Pablo", "Gomez", "esteba5n@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Vendedor").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Contable"));
         assertNotNull(employeeRepository.save(employee));
     }
     @Test
     @Order(29)
-    public void addEmployee5(){
-        Employee employee = new Employee("Roberto", "Garcia", "esteban6@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Limpieza"), departmentRepository.findByDepartmentName("Ventas"));
+    public void addEmployee5() throws JobNotFoundException {
+        Employee employee = new Employee("Roberto", "Garcia", "esteban6@gmail.com", "65456", new Date(), 2000, 12, jobRepository.findByJobId("Limpieza").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Ventas"));
         assertNotNull(employeeRepository.save(employee));
     }
     @Test
@@ -257,33 +259,43 @@ class ChallengeApplicationTests {
         Employee manager = employeeRepository.findByLastName("Casile");
         assertEquals(4,manager.getEmployees().size());
     }
-//    @Test
-//    @Order(17)
-//    public void addLocation1(){
-//        assertNotNull(countryRepository.save(country));
-//    }
-//    @Test
-//    @Order(18)
-//    public void addLocation2(){
-//        assertNotNull(countryRepository.save(country));
-//    }
-//    @Test
-//    @Order(9)
-//    public void addJob(){
-//        Job job = new Job("Vendedor", (short) 3500, (short) 6000);
-//        assertNotNull(jobRepository.save(job));
-//    }
-
-//    @Test
-//    @Order(10)
-//    public void addEmployee(){
-//        Employee employee = new Employee("Esteban", "Casile", "esteban@gmail.com", "8938247238947", new Date(), 5000, 12);
-//        Job job = new Job("Vendedor", (short) 3500, (short) 6000);
-//
-//        employeeRepository.save(employee);
-//        assertNotNull(employee);
-//    }
-
-
+    @Test
+    @Order(35)
+    public void setManagerToDepartment(){
+        Department department = departmentRepository.findByDepartmentName("Contable");
+        department.setManagerId(employeeRepository.findByLastName("Casile"));
+        assertNotNull(departmentRepository.save(department));
+    }
+    @Test
+    @Order(36)
+    public void setManagerToDepartment1(){
+        Department department = departmentRepository.findByDepartmentName("Finanzas");
+        department.setManagerId(employeeRepository.findByLastName("Lopez"));
+        assertNotNull(departmentRepository.save(department));
+    }
+    @Test
+    @Order(37)
+    public void addJobHistory() throws JobNotFoundException {
+        JobHistory jobHistory = new JobHistory(employeeRepository.findByLastName("Casile"), new Date(), new Date(), jobRepository.findByJobId("Vendedor").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Ventas"));
+        assertNotNull(jobHistoryRepository.save(jobHistory));
+    }
+    @Test
+    @Order(38)
+    public void addJobHistory1() throws JobNotFoundException {
+        JobHistory jobHistory = new JobHistory(employeeRepository.findByLastName("Lopez"), new Date(), new Date(), jobRepository.findByJobId("Cajero").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Finanzas"));
+        assertNotNull(jobHistoryRepository.save(jobHistory));
+    }
+    @Test
+    @Order(39)
+    public void addJobHistory2() throws JobNotFoundException {
+        JobHistory jobHistory = new JobHistory(employeeRepository.findByLastName("Gomez"), new Date(), new Date(), jobRepository.findByJobId("Limpieza").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Contable"));
+        assertNotNull(jobHistoryRepository.save(jobHistory));
+    }
+    @Test
+    @Order(40)
+    public void addJobHistory3() throws JobNotFoundException {
+        JobHistory jobHistory = new JobHistory(employeeRepository.findByLastName("Gomez"), new Date(), new Date(), jobRepository.findByJobId("Cajero").orElseThrow(()-> new JobNotFoundException(Messages.JOB_NOT_FOUND)), departmentRepository.findByDepartmentName("Finanzas"));
+        assertNotNull(jobHistoryRepository.save(jobHistory));
+    }
 
 }

@@ -4,20 +4,19 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class CreateEmployeeDto {
     private String firstName;
-    @NotNull
+    @NotBlank
     private String lastName;
-    @NotNull
+    @NotBlank
     private String email;
     private String phoneNumber;
-    @NotNull
-    private Date hireDate;
     private double salary;
     private double commissionPct;
+    @NotBlank
     private String jobId;
-    private short departmentId;
 }
