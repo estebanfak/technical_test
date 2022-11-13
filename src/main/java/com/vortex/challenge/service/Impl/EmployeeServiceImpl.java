@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 createEmployeeDto.getCommissionPct(),
                 jobService.findByJobId(createEmployeeDto.getJobId()));
         return new EmployeeDto(employeeRepository.save(employee));
-    }//-------------checked
+    }
     @Override
     public EmployeeDto modifyEmployee(int employeeId, EmployeeModifyDto employeeModifyDto) throws EmployeeNotFoundException, JobNotFoundException {
         Employee employee = employeeRepository.findByEmployeeId(employeeId).orElseThrow(() -> new EmployeeNotFoundException(Messages.EMPLOYEE_NOT_FOUND));;
@@ -53,31 +53,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeDto employeeDto = new EmployeeDto(employee);
         employeeRepository.delete(employee);
         return employeeDto;
-    }//--------------------------checked
+    }
     @Override
     public EmployeeDto getEmployeeById(int id) throws EmployeeNotFoundException {
         return new EmployeeDto(employeeRepository.findByEmployeeId(id).orElseThrow(() ->  new EmployeeNotFoundException(Messages.EMPLOYEE_NOT_FOUND)));
-    }//---------------------------------checked
+    }
     @Override
     public Page<EmployeeDto> getAll(int offset, int pageSize) {
         return new PageImpl<>(employeeRepository.findAll(PageRequest.of(offset, pageSize)).stream().map(EmployeeDto::new).collect(Collectors.toList()));
-    }//---------------------------------------------------checked
+    }
     @Override
     public Page<EmployeeDto> filterByJobIdId(String jobId, int offset, int pageSize) {
         return new PageImpl<>(employeeRepository.findByJobIdJobId(jobId, PageRequest.of(offset, pageSize)).stream().map(EmployeeDto::new).toList());
-    }//----------------------------checked
+    }
     @Override
     public Page<EmployeeDto> filterByManagerId(int managerId, int offset, int pageSize) {
         return new PageImpl<>(employeeRepository.findByManagerId(employeeRepository.findByEmployeeId(managerId).orElse(null), PageRequest.of(offset, pageSize)).map(EmployeeDto::new).toList());
-    }//-------------------------checked
+    }
     @Override
     public Page<EmployeeDto> filterByLastName(String lastName, int offset, int pageSize) {
         return new PageImpl<>(employeeRepository.findByLastName(lastName, PageRequest.of(offset, pageSize)).stream().map(EmployeeDto::new).toList());
-    }//------------------------checked
+    }
     @Override
     public Page<EmployeeDto> employeesSortedByHireDateAscending(int offset, int pageSize) {
         return new PageImpl<>(employeeRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.Direction.ASC, "hireDate")).stream().map(EmployeeDto::new).collect(Collectors.toList()));
-    }//-----------------------checked
+    }
     @Override
     public List<Employee> getAllEmployeesList() {
         return employeeRepository.findAll();
